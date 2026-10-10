@@ -1,0 +1,38 @@
+# HmiCraft · 可编程人机界面平台知识库
+
+更新：2026-10-10，Asia/Shanghai。这里存放可以随源码版本维护的项目知识，不是机器全局记忆。中文名与英文名 HmiCraft 已确认，用户授权在 IoTSharp 组织建私有仓库并推送；实际状态见 [仓库与命名](repository-and-naming.md)。
+
+## 从哪里开始
+
+| 要解决的问题 | 入口 | 主维护角色 |
+|---|---|---|
+| 用户到底确认了什么，还有什么未定 | [决策登记](decisions.md) | 产品/架构 |
+| 平台开源什么，商业和客户代码放哪里 | [开源与商业边界](open-source-boundaries.md) | 架构/发布 |
+| 自售设备、第三方 OEM、定制如何分工 | [业务与交付](business-and-oem.md) | 产品/硬件/交付 |
+| 名称、Git、远程仓库与首次发行 | [仓库与命名](repository-and-naming.md) | 仓库维护者 |
+| 当前实现、下一任务、验收条件 | [路线图](../../ROADMAP.md) / [交接](../../HANDOFF.md) | 对应路线负责人 |
+
+## 产品事实
+
+这是 VB6 式可视化设计器与独立设备执行层组成的平台。C#/.NET/Avalonia 设计器把布局生成 BASIC，与用户事件脚本及资源一起打包；设备固件内置 IoTEmbedded、LVGL、原生控件和 HMI API。日常更新资源/脚本，新增原生能力才升级基础固件。源码和计划不等于实物验收。
+
+优先 Windows，再 Linux/macOS；先新设备闭环，旧 外部样本 工程/C 宏/旧屏兼容后置。首版监视采集与外设事件，高速计数交给硬件；OPC UA 经独立网关转 Modbus/TCP。
+
+用户新增在线版优先研究方向，整合现有 lvgl-editor 和两个 PR 的适用部分。已接入固定 Web 基线；C# 核心合同与原桌面切片保留，Web 工程→BASIC 的实际接线尚未完成。见 [在线版整合分析](../analysis/lvgl-editor-integration.md)。
+
+客户包括开发者/小团队和设备厂商；业务包括自售设备、第三方 OEM 和定制。开源核心帮助接入，硬件、适配验证、维护和独立效率工具形成收费交付。当前没有固件产品、订单或商业发行完成声明。
+
+## 技术知识入口
+
+- [设计器与设备架构](../architecture.md)、[设备职责与运行合同](../design/embedded-runtime.md)。
+- [IoTEmbedded 固定源码基线](../analysis/iotembedded-baseline.md)、[硬件候选与成本研究](../design/hardware-selection.md)。
+- [原程序首轮分析](../analysis/overview.md)、[帮助功能矩阵](../analysis/manual-analysis.md)、[设备/脚本契约](../analysis/device-and-script-contracts.md)、[REA 原生诊断](../analysis/native-troubleshooting.md)。
+- [桌面技术决策](../adr/0001-desktop-framework.md)、[设备运行时决策](../adr/0002-embedded-hmi-runtime.md)、[质量门禁](../quality-gates.md)。
+- [命名和商业研究备忘](../design/product-and-business-proposal.md)：保留研究与价格假设；后续已确认决定以本知识库为准。
+
+## 维护规则
+
+1. 新信息先标注“用户确认 / 规划基线 / 已验证事实 / 待定”，并关联稳定路线 ID。
+2. 改决策时更新登记和对应专题；ROADMAP 管执行状态，HANDOFF 管本轮 Git/验证/资源状态，避免四处复制不同结论。
+3. 历史提案和失败证据保留，不用后续成功覆盖。商业报价、性能和销量假设不可改写成已验证结果。
+4. 原始提取资料在根 `analysis/`，回执在根 `artifacts/`；可分发的自编分析报告在 `docs/analysis/`。公开范围检查不能只依赖 `.gitignore`。

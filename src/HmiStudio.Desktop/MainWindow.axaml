@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="HmiStudio.Desktop.MainWindow"
+        Title="HmiStudio · 离线工作台" Width="1440" Height="920"
+        MinWidth="1100" MinHeight="740" Background="#F1F4F8"
+        FontFamily="Microsoft YaHei UI, Noto Sans CJK SC, Segoe UI, sans-serif">
+  <Grid x:Name="WorkspaceRoot" RowDefinitions="64,54,*,34">
+    <Border Background="#13283A" Padding="24,0">
+      <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="14">
+          <Border Width="28" Height="28" Background="#55C5AC" CornerRadius="5">
+            <TextBlock Text="H" Foreground="#13283A" FontWeight="Bold" FontSize="19" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <TextBlock Text="HmiStudio" Foreground="White" FontSize="22" FontWeight="SemiBold" />
+          <TextBlock Text="离线工作台 / 技术预览" Foreground="#ADC0CE" VerticalAlignment="Center" />
+        </StackPanel>
+        <TextBlock Grid.Column="2" Text="本地工程 · 离线模拟" Foreground="#ADC0CE" VerticalAlignment="Center" />
+      </Grid>
+    </Border>
+    <Border Grid.Row="1" Background="White" BorderBrush="#DBE2EA" BorderThickness="0,0,0,1" Padding="16,8">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button Content="新建示例" Click="NewProjectClick" />
+          <Button Content="打开" Click="OpenClick" />
+          <Button Content="保存" Click="SaveClick" />
+          <Button Content="另存为" Click="SaveAsClick" />
+          <Border Width="1" Background="#DDE3EB" Margin="8,3" />
+          <Button x:Name="UndoButton" Content="撤销" Click="UndoClick" />
+          <Button x:Name="RedoButton" Content="重做" Click="RedoClick" />
+        </StackPanel>
+        <Button x:Name="ModeButton" Grid.Column="1" Content="▶  运行离线模拟" Background="#176C58" Foreground="White" Click="ModeClick" />
+      </Grid>
+    </Border>
+    <Grid Grid.Row="2" ColumnDefinitions="206,*,272">
+      <Border Background="White" BorderBrush="#DBE2EA" BorderThickness="0,0,1,0" Padding="16">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Spacing="14">
+            <TextBlock Text="工程" FontWeight="SemiBold" Foreground="#617384" />
+            <TextBlock x:Name="ProjectName" FontWeight="SemiBold" FontSize="16" TextWrapping="Wrap" />
+            <TextBlock x:Name="ScreenName" Foreground="#627486" />
+            <Border Height="1" Background="#E6EBF1" Margin="0,4" />
+            <TextBlock Text="控件库" FontWeight="SemiBold" Foreground="#617384" />
+            <StackPanel x:Name="Toolbox" Spacing="7">
+              <Button Content="▭   矩形" Tag="Rectangle" Click="AddWidgetClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+              <Button Content="○   椭圆" Tag="Ellipse" Click="AddWidgetClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+              <Button Content="T   文本" Tag="Text" Click="AddWidgetClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+              <Button Content="▣   开关按钮" Tag="Button" Click="AddWidgetClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+              <Button Content="●   状态指示灯" Tag="Indicator" Click="AddWidgetClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+              <Button Content="123 数值显示" Tag="NumericDisplay" Click="AddWidgetClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+            </StackPanel>
+            <Border Height="1" Background="#E6EBF1" Margin="0,4" />
+            <TextBlock Text="画面对象" FontWeight="SemiBold" Foreground="#617384" />
+            <ListBox x:Name="ObjectList" SelectionChanged="ObjectSelectionChanged" MinHeight="160" MaxHeight="240" />
+            <TextBlock Text="选择后拖动画布对象，或在右侧修改属性。" FontSize="12" Foreground="#708091" TextWrapping="Wrap" />
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
+      <Grid Grid.Column="1" RowDefinitions="48,*,154" Margin="20,0">
+        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+          <TextBlock x:Name="CanvasCaption" FontWeight="SemiBold" Foreground="#4B6073" />
+          <TextBlock Grid.Column="1" Text="按比例适配" FontSize="12" Foreground="#6D7E8E" />
+        </Grid>
+        <Border Grid.Row="1" Background="#E5EBF1" Padding="22" CornerRadius="6">
+          <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="#C8D2DD" BorderThickness="1" BoxShadow="0 4 16 0 #25000000">
+              <Canvas x:Name="DesignCanvas" Width="800" Height="480" Background="White" ClipToBounds="True" />
+            </Border>
+          </Viewbox>
+        </Border>
+        <Border Grid.Row="2" Background="White" CornerRadius="6" Margin="0,18,0,18" Padding="16,12">
+          <StackPanel Spacing="8">
+            <TextBlock Text="离线变量" FontWeight="SemiBold" />
+            <StackPanel x:Name="TagPanel" Orientation="Horizontal" Spacing="24" />
+            <TextBlock Text="模拟值独立于工程初始值；停止模拟后重置。" Foreground="#788796" FontSize="11" />
+          </StackPanel>
+        </Border>
+      </Grid>
+      <Border Grid.Column="2" Background="White" BorderBrush="#DBE2EA" BorderThickness="1,0,0,0" Padding="18">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Spacing="12">
+            <TextBlock Text="对象属性" FontWeight="SemiBold" FontSize="16" />
+            <TextBlock x:Name="SelectionCaption" Foreground="#6A7B8B" TextWrapping="Wrap" />
+            <StackPanel x:Name="PropertyPanel" Spacing="10">
+              <TextBlock Text="显示文字" FontSize="12" /><TextBox x:Name="WidgetTextInput" />
+              <Grid ColumnDefinitions="*,12,*" RowDefinitions="Auto,Auto">
+                <TextBlock Text="X" FontSize="12" /><TextBlock Grid.Column="2" Text="Y" FontSize="12" />
+                <TextBox x:Name="XInput" Grid.Row="1" Margin="0,5,0,0" /><TextBox x:Name="YInput" Grid.Row="1" Grid.Column="2" Margin="0,5,0,0" />
+              </Grid>
+              <Grid ColumnDefinitions="*,12,*" RowDefinitions="Auto,Auto">
+                <TextBlock Text="宽度" FontSize="12" /><TextBlock Grid.Column="2" Text="高度" FontSize="12" />
+                <TextBox x:Name="WidthInput" Grid.Row="1" Margin="0,5,0,0" /><TextBox x:Name="HeightInput" Grid.Row="1" Grid.Column="2" Margin="0,5,0,0" />
+              </Grid>
+              <TextBlock Text="填充颜色（#RRGGBB）" FontSize="12" /><TextBox x:Name="FillInput" />
+              <TextBlock Text="文字颜色（#RRGGBB）" FontSize="12" /><TextBox x:Name="ForegroundInput" />
+              <TextBlock Text="绑定变量（留空表示无绑定）" FontSize="12" /><TextBox x:Name="BindingInput" />
+              <Button Content="应用属性" Click="ApplyPropertiesClick" Background="#E4F3EE" Foreground="#176C58" HorizontalAlignment="Stretch" />
+              <Button Content="删除对象" Click="DeleteWidgetClick" HorizontalAlignment="Stretch" />
+            </StackPanel>
+            <Border Height="1" Background="#E6EBF1" Margin="0,8" />
+            <TextBlock Text="当前范围" FontWeight="SemiBold" />
+            <TextBlock Text="单画面编辑、工程保存/打开、变量绑定、离线状态模拟。使用独立 .hmistudio.json 格式。" Foreground="#6A7B8B" FontSize="12" TextWrapping="Wrap" />
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
+    </Grid>
+    <Border Grid.Row="3" Background="#E7EDF3" Padding="16,7">
+      <TextBlock x:Name="StatusText" Text="就绪" FontSize="12" Foreground="#496175" TextTrimming="CharacterEllipsis" />
+    </Border>
+  </Grid>
+</Window>

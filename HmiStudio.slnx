@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HmiStudio.Core/HmiStudio.Core.csproj" />
+    <Project Path="src/HmiStudio.Desktop/HmiStudio.Desktop.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HmiStudio.Core.Tests/HmiStudio.Core.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,183 @@
+{
+  "formatVersion": 1,
+  "name": "Offline pump station",
+  "screens": [
+    {
+      "id": "014169fe-9373-4e65-b383-3fd15d8ca001",
+      "name": "Overview",
+      "width": 800,
+      "height": 480,
+      "background": "#101927",
+      "widgets": [
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb001",
+          "kind": "Rectangle",
+          "x": 24,
+          "y": 24,
+          "width": 752,
+          "height": 72,
+          "text": "",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb002",
+          "kind": "Text",
+          "x": 44,
+          "y": 38,
+          "width": 480,
+          "height": 34,
+          "text": "PUMP STATION / OFFLINE",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb003",
+          "kind": "Rectangle",
+          "x": 24,
+          "y": 116,
+          "width": 352,
+          "height": 280,
+          "text": "",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb004",
+          "kind": "Text",
+          "x": 44,
+          "y": 134,
+          "width": 270,
+          "height": 32,
+          "text": "CIRCULATION PUMP",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb005",
+          "kind": "Indicator",
+          "x": 54,
+          "y": 188,
+          "width": 64,
+          "height": 64,
+          "text": "Pump state",
+          "fill": "#38D9A9",
+          "foreground": "#F0F4FA",
+          "tagName": "PumpRunning"
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb006",
+          "kind": "Text",
+          "x": 144,
+          "y": 199,
+          "width": 196,
+          "height": 34,
+          "text": "RUN / STOP",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb007",
+          "kind": "Button",
+          "x": 44,
+          "y": 294,
+          "width": 312,
+          "height": 70,
+          "text": "TOGGLE PUMP",
+          "fill": "#246FDC",
+          "foreground": "#F0F4FA",
+          "tagName": "PumpRunning"
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb008",
+          "kind": "Rectangle",
+          "x": 396,
+          "y": 116,
+          "width": 380,
+          "height": 280,
+          "text": "",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb009",
+          "kind": "Text",
+          "x": 416,
+          "y": 134,
+          "width": 320,
+          "height": 32,
+          "text": "TANK LEVEL (%)",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb010",
+          "kind": "NumericDisplay",
+          "x": 416,
+          "y": 192,
+          "width": 320,
+          "height": 78,
+          "text": "Tank level",
+          "fill": "#101927",
+          "foreground": "#F0F4FA",
+          "tagName": "TankLevel"
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb011",
+          "kind": "Ellipse",
+          "x": 426,
+          "y": 304,
+          "width": 44,
+          "height": 44,
+          "text": "",
+          "fill": "#49A8E8",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb012",
+          "kind": "Text",
+          "x": 484,
+          "y": 305,
+          "width": 260,
+          "height": 36,
+          "text": "LOCAL SIMULATION",
+          "fill": "#1C2A3C",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        },
+        {
+          "id": "014169fe-9373-4e65-b383-3fd15d8cb013",
+          "kind": "Text",
+          "x": 24,
+          "y": 422,
+          "width": 752,
+          "height": 32,
+          "text": "Independent project format | No device connection",
+          "fill": "#101927",
+          "foreground": "#F0F4FA",
+          "tagName": null
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "PumpRunning",
+      "type": "Boolean",
+      "initialValue": 0
+    },
+    {
+      "name": "TankLevel",
+      "type": "Number",
+      "initialValue": 64.5
+    }
+  ]
+}

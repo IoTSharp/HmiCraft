@@ -1,0 +1,6 @@
+[submodule "external/IoTEmbedded"]
+	path = external/IoTEmbedded
+	url = https://github.com/IoTSharp/IoTEmbedded.git
+[submodule "external/LvglEditor"]
+	path = external/LvglEditor
+	url = https://github.com/IoTSharp/lvgl-editor.git
