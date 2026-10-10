@@ -1,6 +1,6 @@
 # HmiCraft · 可编程人机界面平台
 
-英文品牌 **HmiCraft**、中文名 **可编程人机界面平台**；**IoTSharp/HmiCraft 私有仓库已创建并推送**。当前代码标识仍为 `HmiStudio`，工程扩展名仍为 `.hmistudio.json`，后续命名迁移单独验收。
+英文品牌 **HmiCraft**、中文名 **可编程人机界面平台**；**IoTSharp/HmiCraft 已创建并推送，按用户最新决定保持公开**。当前代码标识仍为 `HmiStudio`，工程扩展名仍为 `.hmistudio.json`，后续命名迁移单独验收。
 
 构建设计器和设备执行层：主入口按 **Web 编辑器 + 可选桌面/本地桥** 推进，复用 lvgl-editor 的画布，按 VB6 式工作流编辑页面、属性与事件。已有 **C# / .NET 10 + Avalonia** 离线切片保留。设计结果计划生成 **BASIC + 资源包**，设备基于 **IoTEmbedded + LVGL** 独立运行；桌面集成先 Windows，再 Linux/macOS。
 
@@ -58,7 +58,7 @@ dotnet format HmiStudio.slnx --verify-no-changes --no-restore
 
 2026-10-10 本次仓库交付的 .NET 回归：Release 0 警告 / 0 错误、11/11 核心合同和格式检查通过，见 [本轮验证](docs/verification-hmicraft-bootstrap-2026-10-10.md)。前一轮 8 项 Windows 桌面 smoke 已通过并检查截图，见 [桌面验证](docs/verification-2026-10-10.md)；本轮未改桌面代码，未重复 GUI smoke。Web 基线的失败与未测范围另列，不能用 .NET 的通过代替。
 
-详细研究来源、原始材料、提取内容与历史回执仅存放在仓库之外的本地研究目录。构建验证可生成被忽略的 `artifacts/`；带研究身份的材料必须另行归档。新实现不复制外部固件、图标或图库。工程尚未选择分发许可证，也尚未公开发布。
+详细研究来源、原始材料、提取内容与历史回执仅存放在仓库之外的本地研究目录。构建验证可生成被忽略的 `artifacts/`；带研究身份的材料必须另行归档。新实现不复制外部固件、图标或图库。当前源码仓库公开，项目许可证尚未定稿，也尚未发布正式版本或固件。
 
 面向开发者/小团队和设备厂商：计划自售设备与套件，支持第三方 OEM，并提供定制服务。开源核心、独立商业工具与客户专属成果的范围已进入规划；MIT/MPL-2.0 组合仍待发布前按文件定稿，目前没有新增根 LICENSE。研究记录见 [商业方案](docs/design/product-and-business-proposal.md)。
 

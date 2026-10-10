@@ -4,7 +4,8 @@
 
 ## HmiCraft 知识、在线版与首次仓库交付
 
-- 中文名“可编程人机界面平台”，英文名 **HmiCraft**；已按用户授权创建 **IoTSharp/HmiCraft 私有仓库并推送 main**，GitHub已确认private/default branch及子模块SHA可获取。用户随后要求匿名研究、资料移出仓库并重写历史；以本轮最终Git回读为准，不在仓库中保留旧提交定位信息。
+- 中文名“可编程人机界面平台”，英文名**HmiCraft**；IoTSharp/HmiCraft已创建并推送main，用户最新明确**保持公开**。原始根提交已匿名化重写、带明确lease强推成功，可达历史扫描零命中，旧本地提交对象已清理；最终SHA以本轮回读为准。
+- 必要资料及历史回执已完整移动到仓库之外，原analysis/artifacts目录不再位于工作区；同盘目录移动，未删除研究文件。58项文件/gitlink、30份Markdown、129个本地链接和106个路线任务的内容审计通过；移出前87个已记录进程身份均无仍匹配进程。
 - 研究范围覆盖多类商业与开源产品；仓库保留匿名结论、需求和设计选择，实际依赖名称与许可准确保留。详细来源和历史回执只留仓库外本地目录，规则见 [研究规范](docs/knowledge/research-and-attribution.md)。
 - `docs/knowledge/` 已保存名称、技术/设备分工、开源与商业边界、开发者与OEM客户、自售设备、第三方OEM、定制成果归属。GOV/BIZ/LVE任务和 ADR 0003 记录归属、依赖与验收。许可仍为 MIT/MPL-2.0 方案，没有新增根 LICENSE。
 - 用户新增 lvgl-editor 在线方向；推荐 Web 主入口、本地工程、可选桌面/本地桥，复用同一 UI；保留 .NET 核心及已有 Avalonia 切片。BASIC 布局、用户脚本分离、IoTEmbedded/LVGL 设备分工继续有效。

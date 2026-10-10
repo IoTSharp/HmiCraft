@@ -7,16 +7,16 @@
 - 中文名称：**可编程人机界面平台**。
 - 英文名称：**HmiCraft**，用户已选择，用于产品品牌和 GitHub 仓库，不加 IoTSharp 前缀。
 - GitHub 归属：**IoTSharp 组织**，用户已确认。组织归属与品牌前缀是两件事。
-- 远程仓库：**IoTSharp/HmiCraft**，可见性 **private**；用户已明确授权创建和推送。后续公开社区源码另经许可/内容分区门禁。
+- 远程仓库：**IoTSharp/HmiCraft**，可见性 **public**；最初按private创建，用户后续明确确认保持公开。许可证定稿、正式版本与硬件交付仍分别验收。
 - 当前技术标识：`HmiStudio`、`HmiStudio.slnx`、`.hmistudio.json`；不因品牌讨论直接改动持久格式或程序集。
 
 英文品牌与解释性副标题分开：**HmiCraft — Programmable HMI Platform**。产品族可用 HmiCraft Studio / Runtime / Kit / Panel，尚未实现的产品不宣称已上市。公开网页搜索只是初筛，不代表商标或域名已核验；建仓前目标查询返回 404，随后创建和私有推送已完成。
 
 ## 当前 Git 事实
 
-本工作区 `D:\source\HMIlStudio` 的本地 `main` 已推送到 `https://github.com/IoTSharp/HmiCraft.git`，origin跟踪配置已建立。GitHub回读确认 `IoTSharp/HmiCraft`、`isPrivate=true`、默认分支 `main`。用户随后要求匿名化研究与旧提交；初始历史将按同一规则重写，不在文档保留旧提交定位信息。最终分支SHA以Git记录与最终回执为准。
+本工作区`D:\source\HMIlStudio`的main已推送到`https://github.com/IoTSharp/HmiCraft.git`。原根提交已匿名化重写，带明确lease强推成功；GitHub确认默认分支main，重写根提交为`a6b97ce7ebcca1eccad94a2e048e27070755baca`。随后回读`isPrivate=false`，用户明确确认保持公开。本地旧提交对象已清理，后续文档收尾提交的最终SHA以Git记录和回执为准。
 
-创建/推送/回读分别有 `artifacts/process/hmicraft-create-private-20261010-a1.*`、`hmicraft-initial-push-20261010-a1.*`、`hmicraft-initial-remote-proof-20261010-a1.*`。这代表授权的私有源码交付，尚未公开发行、部署站点或发布固件。
+创建、推送、可见性变更观察、历史重写和远端回读都有仓库外本地回执。当前源码公开，但未部署站点、发布正式版本或固件；源码可访问不自动等于项目许可证已经定稿。
 
 IoTEmbedded 固定提交为 `e09e21ff14a7505b4c4c65e084b19293c54bb1e0`；子模块当前未修改。父仓仅记录 gitlink，不把整份上游历史/源码复制进父仓提交。
 

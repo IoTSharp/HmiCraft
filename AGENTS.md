@@ -2,7 +2,7 @@
 
 ## 名称、知识和商业边界
 
-- 中文名称为“可编程人机界面平台”，英文品牌为 HmiCraft；用户已授权创建并推送 GitHub `IoTSharp/HmiCraft` 私有仓库。品牌不加 IoTSharp 前缀。当前 `HmiStudio` 技术标识和 `.hmistudio.json` 保持兼容，不能为文档改名而静默破坏现有工程。
+- 中文名称为“可编程人机界面平台”，英文品牌为 HmiCraft；GitHub `IoTSharp/HmiCraft` 已建立，用户最新明确要求保持公开。品牌不加 IoTSharp 前缀。当前 `HmiStudio` 技术标识和 `.hmistudio.json` 保持兼容，不能为文档改名而静默破坏现有工程。
 - 项目知识保存于 `docs/knowledge/`，以 `decisions.md` 追溯确认来源和路线任务；不把项目知识写入机器全局记忆。新决定同步知识库、ROADMAP、README、CHANGELOG、HANDOFF，历史提案不能覆盖后续用户决定。
 - 用户确认面向开发者/小团队与设备厂商，自售设备、支持第三方 OEM、提供定制服务。社区基础闭环、商业效率工具、量产硬件资料和客户专属成果分开管理，详见知识库。
 - 开源范围是规划基线，MIT/MPL-2.0/商业许可的文件分配仍需定稿；不在未完成权属与第三方检查时添加全仓 LICENSE 或宣称已开源发行。源码公开、取得许可、设备通过、对外发布分别记录。
