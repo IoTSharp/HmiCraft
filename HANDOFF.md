@@ -1,6 +1,30 @@
 # HmiCraft · 可编程人机界面平台交接
 
-更新：2026-10-10，Asia/Shanghai。工作区 `D:\source\HMIlStudio` 从空目录开始，已初始化 Git `main`。最新用户决定与本轮验证列于下节；历史分析和验证保留原时间边界。
+更新：2026-10-11，Asia/Shanghai。工作区 `D:\source\HMIlStudio` 从空目录开始，已初始化 Git `main`。最新用户决定与本轮验证列于下节；历史分析和验证保留原时间边界。
+
+
+## 2026-10-11 三目标修订整合（已正式合并；Node20 CI与Pages部署通过）
+
+- 用户已确认先修订 PR #3 再正式合并 GitHub main，保留 C/LVGL、增加 LispBM/VESC 和 BASIC/IoTEmbedded；独立默认 C，HmiCraft 自有设备入口默认 BASIC，新建/设置可切换并保留每语言用户模块。不支持功能定位诊断阻止导出；首批基础 BASIC 生成及包合同，设备路线继续。
+- PR 起点重新核对 head=`3647ce025bc65cd14c968c1d329dc40d593f7e51`、base=`0d0d62f655442dd5624a00390b7652222a7b3fc8`；本批以 main C 树/文档/测试为基线，引入已审查 LispBM/i18n 和三目标接口，保留原 PR head 祖先，其他通用画布变更暂不采纳。修订head和GitHub merge状态已回读；跨realm包哈希补修与revision .5已推送子仓main `d325fce517a0fd3a4939ebe8e1b325125054f139`；父仓本轮gitlink固定为 `0ef198a084032994a8e9d3788cc4c2a2c56affa0`。
+- C/LVGL 的 GEN-13 已确认 generic/stm32cube-hal/rt-thread-scons profile，首批保存/重开/导出、目录/SConscript/integration-contract 合同；具体 .ioc/BSP 构建和板卡未验证。
+- 公共 `src/output/index.ts`/`types.ts`/`basic.ts` 提供首批源码/包合同，`OutputBundle.deployable=false`。BASIC `hmicraft-hmi-basic/1-draft` 未在 IoTEmbedded 注册；基础控件/事件之外的图/绑定/动画/图片/字体/高级样式需诊断拒绝，runtime/API/资源完整性/设备仍独立验收。
+- 仅子仓门面新增英文 README.md、README.zh-CN.md、README.ru.md 与英中 ROADMAP、AGENTS；共享 revision `2026-10-11.6`、GEN-00～13 共14任务。UI 默认英文且可切中俄，文档翻译不代表完整 UI 覆盖。父仓继续中文，D35～D38 和 LVE-11/GEN-13/知识库/分析同步。
+- 文档同步脚本首次退出0：5文件/13任务/28链接。首次 whitespace 检查保留了 README 末行 CRLF 失败，已规范 LF；最终文档检查与进程状态另附本轮汇总。文档代理未提交、未推送，未安装工具或连接设备，交付文档和验证日志保留，未创建独占 MCP 服务。
+- 2026-10-11 本地最终证据：子仓509通过/48项C编译跳过，实际npm run build（tsc -b+Vite）退出0；两控件/内置事件/三语言slot样例三目标ZIP/JSON导出、三语无reload切换及BASIC保存/reload恢复通过，九ZIP路径/字节/SHA256独立检查通过。父 eng/verify runId `verify-20261011-021113-dfb682` 通过。PR #3 于 `2026-10-10T18:40:28Z`（北京时间2026-10-11 02:40:28）正式合并；修订head为 `a397fa8389c481b44df47ebef37c6c555b1ef56f`，merge提交为 `9e458f8b7b7eda8898c4633535b68f73679af02e`，已fetch的origin/main与已审查树一致。GEN-11为done-remote，仅记录远端合并回执。首次合并后的Pages CI run `38076733467` 失败：506通过、3个包哈希案例失败、48项C编译跳过，原因是Node20跨realm ArrayBuffer处理；跨realm包哈希补修与revision .5文档已提交并推送子仓main `d325fce517a0fd3a4939ebe8e1b325125054f139`；Node20.20.2 Pages run `38077281534` 已completed/success，509通过/48项C编译跳过、revision .5文档同步、tsc/Vite及build/deploy两个job均成功；部署完成于 `2026-10-10T18:49:42Z`（北京时间2026-10-11 02:49:42）。该代码补修回执对应d325fce；最终纯文档提交 `0ef198a084032994a8e9d3788cc4c2a2c56affa0` 已正常推送并回读子仓main，Node20.20.2 Pages run `38077585386` 对该SHA的509项测试/48项C编译跳过、revision .6同步、tsc/Vite及build/deploy均成功，于北京时间2026-10-11 02:54:07完成；父仓gitlink固定到此可获取提交；首轮失败及本地回执均保留。GEN-09/12保留partial，小样例源码包不替代资源广样例、完整UI覆盖、固定LVGL/.ioc/BSP构建、脚本runtime/bridge与设备证明。
+- 父映射状态已协调为partial；子GEN-03/13记录统一C/profile代码及本地验证，GEN-11为done-remote，仅完成远端合并回执；GEN-09/12继续partial。文档revision2026-10-11.6保持三语/双语同步；先前失败证据不覆盖。
+- 最终子仓 `0ef198a084032994a8e9d3788cc4c2a2c56affa0` 已正常推送/回读main且工作区干净，父gitlink固定到该SHA；最终Node20.20.2 Pages run `38077585386` 的509项通过/48 C编译跳过、revision .6/类型/构建/部署均成功。本任务父9份文档/113个本地链接无断链，首次只读链接工具的自动变量错误回执保留。进程审计85份回执/265身份、匹配存活0；4个复用PID未动，五份其他会话文档SHA256未变并保留未提交状态。证据见 `artifacts/process/pr3-final-resource-audit-20261011.json` 与最终CI日志；完整边界见主整合验证报告。
+
+## 2026-10-10 决定：统一编辑器与三目标（历史）
+
+- 用户确认 C/LVGL、LispBM/VESC、BASIC/IoTEmbedded 三条正式输出主线，并明确可视化和三种输出都归 LvglEditor；HmiCraft 初始化时配置输出目标/profile并消费结果。D32～D34、OUT-01～06 与 [职责知识](docs/knowledge/designer-and-targets.md) 已登记，取代早期 LispBM 可选插件及父仓拥有生成器的规划。
+- 本轮起点为父仓 `ff81ef0`，工作区干净，`main...origin/main` 无本地差异。`external/LvglEditor` 已在索引中以 mode 160000 固定为 `0d0d62f655442dd5624a00390b7652222a7b3fc8`，子模块 HEAD 一致且工作区干净；沿用既有接入，没有重复添加、更新 SHA 或改动子仓源码。
+- 子仓新增 [ROADMAP](external/LvglEditor/ROADMAP.md) 的 GEN-00～10，定义初始化配置、默认/允许目标、版本化 profile、持久化冲突处理、三生成器、资源打包、用户代码与分目标验证；子仓 README/CHANGELOG 同步。本轮仅本地文档修改，子模块 HEAD/gitlink 仍在上述 SHA，新增文档尚未包含在固定提交中。
+- LvglEditor 负责公共模型/三后端/资源输出；HmiCraft 负责宿主初始化、旧工程适配、消费结果和设备交付；IoTEmbedded 负责 BASIC 通用底层。现有 Avalonia/.hmistudio.json 保留兼容与回归基线，接口尚待实现。
+- 实施顺序为子仓 GEN-00 → GEN-01/02 → GEN-03/04/05，并由 GEN-06/07 支撑；GEN-10 验证宿主接口。父仓 LVE-05/OUT-01 接入，OUT-02～06 映射各目标闭环。HMI-01/02/03 实现归子仓，HMI runtime/部署归父仓。
+- 本轮仅同步父子仓规划，没有实现初始化接口、合并 PR、设备操作、提交或推送。历史 Web 类型/字体失败仍未修复；.NET 验证 `verify-20261010-233929-4c273d` 的 restore/Release build/console合同/format 均退出0，0警告/0错误、11/11合同通过，测试独占目录已清理；随后仅继续修改文档，未重复 GUI 或 Web 测试。日志在 `artifacts/process/verify-20261010-233929-4c273d-*`。
+- 最终文档检查覆盖16份文件、111个本地链接，新增断链0；首次检查发现子仓 README 的 `./LICENSE` 缺文件，已从固定 HEAD 确认是既有问题，保留 LVE-02/GOV-04。GEN-00～10 共11个唯一任务，父子仓 whitespace 检查均退出0。
+- 四份验证进程回执记录的16个身份均无仍匹配进程；短 smoke 未生成 owned-processes 清单，但启动回执 PID 已不存在。测试临时目录已回收，本轮未安装工具或启动服务，构建/验证日志保留。
 
 ## HmiCraft 知识、在线版与首次仓库交付
 
@@ -10,8 +34,8 @@
 - `docs/knowledge/` 已保存名称、技术/设备分工、开源与商业边界、开发者与OEM客户、自售设备、第三方OEM、定制成果归属。GOV/BIZ/LVE任务和 ADR 0003 记录归属、依赖与验收。许可仍为 MIT/MPL-2.0 方案，没有新增根 LICENSE。
 - 用户新增 lvgl-editor 在线方向；推荐 Web 主入口、本地工程、可选桌面/本地桥，复用同一 UI；保留 .NET 核心及已有 Avalonia 切片。BASIC 布局、用户脚本分离、IoTEmbedded/LVGL 设备分工继续有效。
 - `external/LvglEditor` 已作为第二个真实 Git 子模块固定到 `0d0d62f655442dd5624a00390b7652222a7b3fc8`，源码未改。上游 README 声明 MIT，但缺正式许可文件；LVE-02/GOV-04 在公开分发前处理。
-- PR #2（`d8a0efe19eddcb58b4c4b7bd6a7ad65361862754`）是 OmniHost 桌面草稿，macOS 未实现，资源路径、私有包源和 .NET 版本需验证。PR #3（`3647ce025bc65cd14c968c1d329dc40d593f7e51`）大幅转向 LispBM/VESC；通用画布/资源/状态/i18n 改进逐项选择，不整体替代 BASIC。**未合并或采纳两个 PR 的代码，未运行它们的构建。**
-- Web main 验证：安装依赖退出0；`tsc -b` 退出2；Vitest 390项中386通过/4个字体断言失败（退出1）；静态 Vite bundle退出0。特定 Linux/Emscripten 的 `compile.test.ts` 未运行；未执行浏览器 GUI smoke、离线缓存或设备下载。Web 仍为 partial，不能发布就绪。
+- PR #2（`d8a0efe19eddcb58b4c4b7bd6a7ad65361862754`）是 OmniHost 桌面草稿，macOS 未实现，资源路径、私有包源和 .NET 版本需验证。PR #3（`3647ce025bc65cd14c968c1d329dc40d593f7e51`）大幅转向 LispBM/VESC；通用画布/资源/状态/i18n 改进逐项选择，不整体替代 BASIC。**2026-10-10该次基线核查尚未合并或采纳两个PR的代码，未运行它们的构建；2026-10-11修订PR #3已正式合并，见顶部新回执。**
+- Web main 验证：安装依赖退出0；`tsc -b` 退出2；Vitest 390项中386通过/4个字体断言失败（退出1）；静态 Vite bundle退出0。特定 Linux/Emscripten 的 `compile.test.ts` 未运行；2026-10-10当时未执行浏览器GUI smoke、离线缓存或设备下载；2026-10-11小样例浏览器旅程已通过，离线缓存/设备与完整覆盖仍未验，Web继续partial。
 - .NET 回归 runId `verify-20261010-225923-c29f48`，以及文本行尾规范化后的最终回归 `verify-20261010-230650-b648f3`：restore/build/console合同/format全退出0，Release 0警告/0错误，11/11合同通过；未改桌面源码，未重复 GUI。
 - 修复 `.gitignore`：根 `/analysis/`、`/artifacts/` 继续排除原始材料/回执，自编 `docs/analysis/` 能被正常提交。原 外部样本 资源、安装包、凭据及 `node_modules/dist` 不进入父仓。
 - 验证入口：[本轮仓库与Web验证](docs/verification-hmicraft-bootstrap-2026-10-10.md)；方案：[Web/PR整合](docs/analysis/lvgl-editor-integration.md)。Web 原始回执前缀 `artifacts/process/hmicraft-web-*`，分析 checkout `analysis/work/lvgl-editor-baseline` 保留。
@@ -97,3 +121,7 @@ R0-04/05/06、R5/R6/R8 仍有价值，但作为兼容支线后置；不要把新
 - 早期安装临时目录 `C:\Users\mysti\AppData\Local\Temp\codex-rea-install-20261010-a340b774` 的清理被自动审批策略拒绝，未绕过；原安装回执位于 `C:\Users\mysti\.codex\install-receipts\rea-20261010-a340b774.json`。
 - 两个 Ghidra 诊断独占目录 `analysis/work/native-diagnostic-runtime-noanalysis`（空）与 `analysis/work/native-diagnostic-runtime-analysis`（90 文件、33,402,801 字节）删除也被自动审批策略拒绝，仅返回 `blocked by policy`。未更换工具绕过，继续保留，见 `analysis/evidence/native-diagnostic-retention.json`。
 - 不清理全局 Ghidra、JDK、REA、共享缓存或原安装。不能按进程名称杀任务；必须匹配 PID、创建时间、命令和父链。
+
+最终细节见[子仓验证报告](external/LvglEditor/docs/verification-pr3-2026-10-11.md)与[共同样例](external/LvglEditor/samples/three-targets.lvgl.json)。
+
+本轮源码、浏览器、正式合并、CI与资源状态见[主整合验证报告](docs/verification-pr3-2026-10-11.md)。

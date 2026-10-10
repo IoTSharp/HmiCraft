@@ -1,6 +1,6 @@
 # HmiCraft · 可编程人机界面平台路线图
 
-更新：2026-10-10。产品方向已扩展并由用户逐项确认：**VB6 式跨平台设计器 + IoTEmbedded 基础框架 + LVGL 设备执行层**。桌面先 Windows，再 Linux/macOS；新设备闭环优先，旧 外部样本 工程/宏/旧屏兼容后置。当前只有可运行桌面切片、静态分析和固定子模块，设备运行时尚未实现。
+更新：2026-10-11。用户最新确认：**lvgl-editor 统一承担 VB6 式可视化设计，C/LVGL、LispBM/VESC、BASIC/IoTEmbedded 为三条正式输出主线**。自有工业 HMI 继续走 IoTEmbedded + LVGL；桌面先 Windows，再 Linux/macOS；旧 外部样本 工程/宏/旧屏兼容后置。当前已有桌面切片和固定 Web 子模块；本批开始修订合并 PR #3、统一目标选择和基础 BASIC 生成/包合同，设备运行链路仍待实现验收。
 
 中文名“可编程人机界面平台”、英文名 **HmiCraft**、GitHub **IoTSharp/HmiCraft**已由用户确认并授权创建/推送，最新决定为**保持公开**。知识入口见 [项目知识库](docs/knowledge/README.md)。用户随后提出以 `IoTSharp/lvgl-editor` 发展在线版并整合两个 PR：现阶段采用固定 main 子模块先接入，在线优先/共用 Web UI 的后续方案见 LVE；原 C# 内核和离线切片保留，不能把旧路线中的 Avalonia 选择当作排斥 Web 的约束。
 
@@ -8,9 +8,9 @@
 
 ## 本次确认的需求与项目分工
 
-1. 拖放控件、属性和事件编辑采用 VB6 式工作流；设计器把**布局也生成 BASIC**，调用固件中的 LVGL 控件库。生成代码与用户事件代码分开保存，不能重生成时覆盖用户逻辑。
+1. 拖放控件、属性和事件编辑采用 VB6 式工作流，可视化统一在 `external/LvglEditor` 演进。公共模型分别输出 C、LispBM/VESC 和 BASIC/IoTEmbedded；BASIC 目标把**布局也生成 BASIC**，调用固件中的 LVGL 控件库。生成代码与各目标用户代码分开保存，切换目标与重生成不能丢失用户逻辑。
 2. 基础固件内置框架/驱动、LVGL 和控件/脚本扩展库；日常下发独立资源与脚本包，支持动画、字体/图片和 BASIC。新增原生能力才需升级固件。
-3. IoTEmbedded 负责可复用的 MCU/RTOS/BSP、显示与输入驱动、GPIO/ADC/PWM/总线/协议、BASIC 内核和存储；本仓负责设计器、代码生成、HMI 控件/API、工程包、事件与变量绑定、部署、模拟和产品集成。
+3. LvglEditor 负责可视化、公共模型、初始化目标配置、三种代码生成和资源打包；本仓初始化时指定目标/profile、适配工程并消费产物，负责 HMI 控件/API、包加载、事件/变量绑定、部署与设备集成。IoTEmbedded 负责通用 MCU/RTOS/BSP、显示/输入驱动、GPIO/ADC/PWM/总线/协议、BASIC 内核和存储。
 4. 首款研究工业 HMI：4.3～7 寸、24V、触摸、RS485；GPIO/温度/位置计数/开关/模拟量等状态采集，Modbus/TCP/串口扩展。高速计数由硬件承担，不由 BASIC 做轴运动闭环。
 5. BASIC 需要持续事件循环，处理定时器/变量变化/界面/外设，执行受预算限制且不阻塞 UI。
 6. OPC UA 首版由网关转换为 Modbus/TCP；不把 native OPC UA 加入 MCU 首版要求。
@@ -25,7 +25,10 @@
 flowchart LR
     E0[需求 / 目标 profile / 包与 API 合同] --> R1[新格式与离线内核]
     R1 --> R2[完整编辑基础]
-    R2 --> Gen[布局 BASIC / 事件代码 / 资源包]
+    R2 --> Targets[公共模型 / 三目标能力校验]
+    Targets --> CTarget[C / LVGL 生成与固件集成]
+    Targets --> LispTarget[LispBM / VESC 生成与资源部署]
+    Targets --> Gen[布局 BASIC / 事件代码 / 资源包]
     E0 --> IE[IoTEmbedded 通用能力补齐]
     IE --> HMI[本仓 HMI runtime / LVGL / BASIC 扩展]
     Gen --> HMI
@@ -46,7 +49,7 @@ flowchart LR
     R2 --> R9[三平台质量与发行]
 ```
 
-先实现“设计器生成 BASIC/资源 → 包下载 → 新设备 LVGL/事件/IO”的最小闭环，再扩展控件和协议。R0/R5/R6/R7/R8 为兼容支线，不阻塞新的设备主线。桌面仍可离线工作，R9 随稳定切片做跨平台验证。
+先稳定公共编辑器和目标合同，再按 OUT 路线分别推进三种输出；BASIC 自有设备路径实现“设计器生成 BASIC/资源 → 包下载 → 新设备 LVGL/事件/IO”的最小闭环。三目标分别验收，不要求同批完成。R0/R5/R6/R7/R8 为后置兼容支线；R9 随稳定切片做跨平台验证。
 
 ## GOV：名称、知识、仓库和发行治理
 
@@ -70,16 +73,30 @@ flowchart LR
 |---|---|---|---|---|
 | LVE-01 | HmiCraft 集成 | LvglEditor 固定子模块与事实基线 | done-local | main=`0d0d62f655442dd5624a00390b7652222a7b3fc8`；与 IoTEmbedded 分开；保留上游源码 |
 | LVE-02 | 维护者/发布 | 上游源码/资源/WASM 许可与来源 | planned | README MIT 声明、缺少 LICENSE、字体/图标/WASM 来源分别核查；不擅自重授权 |
-| LVE-03 | 编辑器维护 | PR #2/#3 选择性采纳 | partial | 已核对固定 head/文件改动和关键入口；#2 为桌面草稿且 macOS 未支持；#3 替换为 LispBM，不能整包覆盖 BASIC 主线；分项复核/测试后采纳 |
+| LVE-03 | 编辑器维护 | PR #2/#3 选择性采纳 | partial | PR #3已修订并正式合并，merge=`9e458f8b7b7eda8898c4633535b68f73679af02e`，保留C并加入BASIC；GEN-11为done-remote，首次Pages CI失败已补修d325fce，Node20.20.2 run38077281534源码测试/构建/Pages部署成功；#2 为桌面草稿且 macOS 未支持，独立推进 |
 | LVE-04 | 产品/前端/.NET | 在线主入口与离线/桌面共用 UI 方案 | planned | 先静态 Web 本地工程，再离线缓存/恢复；Web 编辑保存/导出、可重复部署；桌面/本地桥解决明确设备访问缺口；复用同一画布，保留 C# 核心合同；LVE-01/08 |
-| LVE-05 | 编译器/前端 | Web 工程→公共模型→BASIC/资源包 | planned | 稳定 ID/属性/事件/逻辑图/资源映射、未知项诊断、source map；C 代码块不自动等同 BASIC；E0-04、HMI-02/03、LVE-04 |
+| LVE-05 | HmiCraft 宿主集成 | 初始化 LvglEditor 目标配置并消费输出 | planned | 按子仓 GEN-01/02/10 配置目标/允许范围/profile，导入旧工程、获取产物/诊断；不在父仓重复实现生成；OUT-01、E0-04、LVE-04 |
 | LVE-06 | runtime/验证 | Web LVGL 预览与设备语义一致性 | planned | Canvas、预编译 WASM、同一 BASIC/runtime 预览分别证明；资源/事件轨迹与固定包；HMI-05/06/09、LVE-05 |
 | LVE-07 | 交付/验证 | 在线版设备下载和可选本地桥 | planned | 浏览器能力探测、允许来源/用户选择设备、长度与取消；不把开发编译服务直接公开；HMI-08、LVE-04/05 |
-| LVE-08 | 编辑器维护/验证 | 固定 Web 基线修复与完整门禁 | partial | 已保留 tsc 退出2、Vitest 386通过/4失败、静态 bundle 退出0；修复类型及字体语义、消除测试环境硬编码，再做浏览器新建/编辑/保存/重开/导出旅程；不得用打包替代类型检查；LVE-01 |
-| LVE-09 | 编辑器维护 | PR #3 通用能力分项采纳 | planned | 锁定 head、按依赖拆画布/状态/资源/主题/i18n 补丁；每项有原问题、最小差异、前后回归和可回退提交；保留中文、BASIC 目标及已有测试，LispBM 另作可选插件；LVE-03/08 |
+| LVE-08 | 编辑器维护/验证 | 固定 Web 基线修复与完整门禁 | partial | 保留2026-10-10 tsc退出2、Vitest386通过/4失败、静态bundle退出0；2026-10-11类型/字体回归修复，实际build退出0、509通过/48C编译跳过、小样例三目标ZIP/JSON和三语切换/BASIC恢复通过；Node20.20.2 CI源码测试/构建/Pages部署已通过，完整资源/旅程及目标编译仍待验，不用打包替代类型检查；LVE-01 |
+| LVE-09 | 编辑器维护 | PR #3 通用能力分项采纳 | partial | 已采纳已审查 LispBM/i18n 来源及三目标接线，保留 main C 代码/测试；本地509通过/48 C编译跳过、类型/打包通过；其他画布/状态/资源通用大改暂不采纳，小样例三语浏览器已通过；远端合并回执已核实，首轮Pages CI失败已补修d325fce，Node20.20.2 run38077281534源码测试/构建/Pages部署成功；完整能力/设备另验；LVE-03/08、GEN-11/12 |
 | LVE-10 | 桌面/本地集成 | PR #2 菜单与宿主分项采纳 | planned | 菜单可先复用，OmniHost 单独验证包源/资源路径/.NET版本/本地权限；macOS 缺口独立关闭，workflow 跳过不能算包通过；LVE-03/04/08 |
+| LVE-11 | LvglEditor 文档/UI | 子仓三语门面、双语路线和 UI 国际化 | partial | 映射 GEN-12；README 英/中/俄、ROADMAP 英/中同步，子仓 AGENTS 明确约束；UI 默认英文可切中俄，界面覆盖独立验证；父仓保持中文；D37 |
 
-在线 MVP 顺序：LVE-08 质量基线 → LVE-04 浏览器本地工程 → LVE-05 BASIC 包 → LVE-06 同运行时预览 → LVE-07 设备交付。LVE-09 的通用修复按具体收益插入；LVE-10 桌面宿主按本地设备/离线需求推进。账户、云协作和服务器编译暂不作为 MVP 前提。
+在线 MVP 顺序：LVE-08 质量基线 → LVE-04 浏览器本地工程 → LVE-05/OUT-01 公共模型与目标合同 → OUT-02/03/04 分目标生成与验证。BASIC 设备路径继续 LVE-06 同运行时预览 → LVE-07 设备交付；C/VESC 的运行与部署分别归对应 OUT 任务。LVE-09 的通用修复按具体收益插入；LVE-10 桌面宿主复用同一工作台。账户、云协作和服务器编译暂不作为 MVP 前提。
+
+## OUT：统一可视化设计与三条输出主线
+
+用户确认来源为 D32～D37，详细职责与工程合同见 [统一设计器与三目标](docs/knowledge/designer-and-targets.md)。**可视化与三种输出全部由 LvglEditor 实现**，权威实施任务见 [子仓 GEN 路线](external/LvglEditor/ROADMAP.md)；本节只追踪子仓交付与 HmiCraft 初始化/运行集成。子仓改动独立验证/提交后，父仓才固定可获取 gitlink。
+
+| ID | 主归属 | 交付 | 状态 | 验收/依赖 |
+|---|---|---|---|---|
+| OUT-01 | LvglEditor 公共 API；HmiCraft 对接 | 子仓初始化/模型/目标合同与宿主接线 | partial | 映射 GEN-01/02/10；已实现统一目标解析/生成入口、允许目标/切换限制、持久化和诊断合同，子仓本地测试/类型/打包通过；HmiCraft 实际宿主初始化、设备/API profile 会签及消费仍待 LVE-05，不把源码接口当产品接入通过；LVE-04 |
+| OUT-02 | LvglEditor C 后端；目标集成 | C/LVGL 正式输出链路 | partial | 映射 GEN-03/06/13；原 C 已接统一 backend，generic/stm32cube-hal/rt-thread-scons 持久化/目录/适配合同已实现；三个profile浏览器ZIP下载通过；48项C编译环境测试跳过，固定LVGL/具体.ioc/BSP构建和板卡未验；OUT-01、LVE-08 |
+| OUT-03 | LvglEditor LispBM 后端；VESC 集成 | LispBM/VESC 正式输出链路 | partial | 映射 GEN-04/06/07；已整合PR #3 LispBM源码/资源生成并接统一入口，保留C/BASIC；本地合同/编码测试通过，Lisp小样例浏览器ZIP/JSON通过，实际解释器/桥接/API/profile、脚本上传/回读及指定VESC设备未验；OUT-01、LVE-03/09 |
+| OUT-04 | LvglEditor BASIC 后端；HmiCraft runtime | BASIC/IoTEmbedded 正式输出链路 | partial | 映射 GEN-05/06/07；基础绝对像素布局/事件/按目标用户模块与draft API/包/摘要/source map已实现，本地合同测试通过；包deployable=false，BASIC小样例ZIP/JSON及保存/reload恢复通过，IoTEmbedded API注册、HmiCraft runtime/资源完整转换/预算取消IO/更新恢复与板卡未验；OUT-01、E0-04、HMI-02～09、INT-03 |
+| OUT-05 | HmiCraft 旧工程适配；LvglEditor 模型/代码 | 旧切片迁移与各目标用户代码保护 | planned | 宿主显式映射 .hmistudio.json 到编辑器模型；GEN-02/07 保证保存/重开/切换/重生成不丢代码；未知项诊断；OUT-01 |
+| OUT-06 | LvglEditor 生成验证；各目标设备集成 | 三目标共同样例与独立证据矩阵 | partial | 映射 GEN-08/09；子仓509通过/48C编译跳过、类型/打包与C三profile ZIP浏览器通过；Lisp/BASIC小样例ZIP/JSON、三语无reload切换/BASIC恢复及九ZIP元数据检查通过，同页面资源/事件轨迹的目标运行和实板矩阵未完成，视觉/生成/编译/脚本/设备分别记录；OUT-02/03/04/05 |
 
 ## BIZ：设备、OEM 和定制业务
 
@@ -123,11 +140,13 @@ flowchart LR
 
 ## HMI：当前项目的设计与设备实现
 
+本节是跨仓交付追踪：HMI-01/02/03 的编辑/生成/打包实现归 LvglEditor GEN 任务，HmiCraft 提供并验证设备 API/包合同；HMI-04 起的自有运行时与部署仍归本仓。不能据旧任务名称在父仓另写生成器。
+
 | ID | 主归属 | 交付 | 状态 | 验收/依赖 |
 |---|---|---|---|---|
-| HMI-01 | 设计器 | VB6 式页面/控件/属性/事件/代码工作台 | planned | R2 多画面/变量、事件入口、用户代码独立保存、诊断定位；不复刻 VB6 二进制；E0-04、R2-03/04 |
-| HMI-02 | 编译器 | 工程→BASIC 布局创建与事件绑定生成器 | planned | 同工程可重复生成；稳定对象 ID；改名/删除诊断；不覆盖用户事件；source map；E0-04、HMI-01 |
-| HMI-03 | 编译器 | 资源管线与独立设计包 | planned | 字体子集/图片/动画、索引/摘要/依赖、目标预算、版本拒绝；生成与用户脚本一起成包；E0-04/05、HMI-02 |
+| HMI-01 | LvglEditor 工作台 | VB6 式页面/控件/属性/事件/代码工作台 | planned | GEN-02/07；R2 多画面/变量、事件入口、用户代码独立保存、诊断定位；E0-04、R2-03/04 |
+| HMI-02 | LvglEditor BASIC 后端 | 工程→BASIC 布局创建与事件绑定生成器 | partial | GEN-05基础控件绝对px布局/基本样式/基础事件、独立用户模块和BASIC定位source map已实现，本地合同测试通过；hmicraft-hmi-basic/1-draft未在IoTEmbedded注册，完整能力/设备API会签、runtime与板卡后验；E0-04、HMI-01 |
+| HMI-03 | LvglEditor 资源/打包；HmiCraft 合同会签 | 资源管线与独立设计包 | partial | GEN-06统一输出清单/文件摘要/代码归属与BASIC draft包已实现，deployable=false；BASIC图片/字体/动画/绑定/高级样式等不支持项阻止导出，完整资源转换/预算/version拒绝及HmiCraft runtime校验消费待实现；E0-04/05、HMI-02 |
 | HMI-04 | 设备 runtime | 包加载、资源句柄、启动/卸载、对象/变量生命周期 | planned | 不执行损坏/不兼容包；限额、回收、旧代际句柄失效、错误可诊断；IEB-05、HMI-03 |
 | HMI-05 | 设备 runtime | BASIC HMI API 与持续事件宿主 | planned | UI创建/属性/事件/定时器/动画/IO API固定向量；队列上限、取消、重入和预算；IEB-06、HMI-04 |
 | HMI-06 | 设备 runtime | LVGL 原生控件封装与 port | planned | 一份锁定 LVGL；六基础控件先行、触摸/焦点、flush完成/线程归属；BASIC 创建真实对象；公共控件依赖 HMI-05，主机适配依赖 IEB-11，板卡适配另依赖 IEB-02/03/08 |
@@ -150,9 +169,9 @@ flowchart LR
 
 ## 新主线的执行顺序
 
-1. 冻结 E0-04/05：HMI BASIC API、生成/用户代码边界、能力/包合同、单板与资源预算；无需等待 REA 整程序逆向。
+1. PR #3已按GEN-11正式修订合并，继续GEN-12与三目标/多语剩余验收；Node20.20.2 CI与Pages部署已通过；冻结 E0-04/05：HMI BASIC API、生成/用户代码边界、能力/包合同、单板与资源预算；无需等待 REA 整程序逆向。
    同步推进 LVE-02/04/05，将 Web 编辑器接到同一 BASIC/包合同；GOV-03 先固化仓库，GOV-04 在公开发行前定稿许可。
-2. IEB-01/02/05/06/08/11 和 HMI-01/02 以合同分工推进：通用扩展留子项目，设计器/代码生成留父项目；主机 port 与板卡 port 分别验收。
+2. IEB-01/02/05/06/08/11 和 HMI-01/02 以合同分工推进：通用扩展留子项目，设计器/三目标代码生成留 LvglEditor 子项目；主机 port 与板卡 port 分别验收。
 3. HMI-03～06、HMI-09：先在主机让生成 BASIC 创建真实 LVGL 六控件并运行事件，再组合单板固件。
 4. IEB-03/04/10、HMI-07/08、INT-03：输入、GPIO/传感器、Modbus、资源包下载与重启回读。
 5. HMI-10、INT-04/05：网关、失败恢复和性能/容量，再据成本与实测定首款硬件。
@@ -277,3 +296,5 @@ R0-01/02/03 通过不代表“整个程序已反编译”。原安装 `Project` 
 5. R0-06/R5-01：样本驱动的旧容器读取；先给兼容报告，再尝试可编辑导入。
 
 完成某项时同步代码、对应报告与质量门禁。保持 `partial`、超时、未知和未测平台，不用成功截图替换缺失的行为证据。
+
+本轮源码、浏览器、正式合并、CI与资源状态见[主整合验证报告](docs/verification-pr3-2026-10-11.md)。
